@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="style.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="node_modules/bootstrap/dist/css/bootstrap.min.css"
+    />
+    <title>suma</title>
+  </head>
+  <body>
+    <br />
+    <main class="justify-content-center">
+      <h3 class="text-center">COMPILADOR SUMA</h3>
+      <form action="">
+        <input
+          class="form-control"
+          type="number"
+          style="width: 50vh; margin-left: 15vh"
+          placeholder="Digite el primer numero, maximo 3 "
+          id="numero1"
+        />
+
+        <input
+          class="form-control"
+          type="number"
+          style="width: 50vh; margin-left: 15vh"
+          placeholder="Digite el segundo numero, maximo 3"
+          id="numero2"
+        />
+
+        <div class="button">
+          <button
+            type="button"
+            class="btn btn-success jus"
+            style="
+              margin-left: 25vh;
+              position: relative;
+              top: 20px;
+              margin-bottom: 2%;
+            "
+            onclick="validar()"
+          >
+            Sumar
+          </button>
+          <button
+            type="reset"
+            class="btn btn-danger jus"
+            style="position: relative; top: 20px; margin-bottom: 2%"
+            onclick="eliminar()"
+          >
+            Limpiar
+          </button>
+        </div>
+      </form>
+
+      <h2
+        class="text-center"
+        id="error"
+        style="color: red; margin-top: 4%"
+      ></h2>
+
+      <h2
+        style="font-family: 'Times New Roman', Times, serif; margin-top: 2%"
+        class="text-center"
+        id="procedimiento"
+      ></h2>
+      <section class="grilla">
+        <div class="suma-container">
+          <h2 id="paso1" class="text-center"></h2>
+          <div class="numero" id="num1"></div>
+          <div class="signo" id="signo1"></div>
+          <div class="numero" id="num2"></div>
+          <div id="linea1" class="linea"></div>
+          <div class="numero" style="color: red" id="resu1"></div>
+        </div>
+        <br />
+        <div class="suma-container" id="ocultar">
+          <h2 id="paso2" class="text-center"></h2>
+          <div class="numero" id="nume1"></div>
+          <div class="signo" id="signo2"></div>
+          <div class="numero" id="nume2"></div>
+          <div id="linea2" class="linea"></div>
+          <div class="numero" style="color: red" id="resu2"></div>
+        </div>
+
+        <div class="suma-container" id="ocultar2">
+          <h2 id="paso3" class="text-center"></h2>
+          <div class="numero" id="nume3"></div>
+          <div class="signo" id="signo3"></div>
+          <div class="numero" id="nume4"></div>
+          <div id="linea3" class="linea"></div>
+          <div class="numero" style="color: red" id="resu3"></div>
+        </div>
+      </section>
+      <section>
+        <h2
+          style="font-family: 'Times New Roman', Times, serif"
+          class="text-center"
+          id="resultado"
+        ></h2>
+        <div class="resultado">
+          <h2 id="numeros"></h2>
+          <h2 class="result text-center" id="final"></h2>
+        </div>
+      </section>
+    </main>
+  </body>
+  <script src="/main.js"></script>
+</html>
