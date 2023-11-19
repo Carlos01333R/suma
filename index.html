@@ -17,44 +17,32 @@
       <form action="">
         <input
           class="form-control"
-          type="number"
-          style="width: 50vh; margin-left: 15vh"
+          type="text"
           placeholder="Digite el primer numero, maximo 3 "
           id="numero1"
         />
 
         <input
           class="form-control"
-          type="number"
-          style="width: 50vh; margin-left: 15vh"
+          type="text"
           placeholder="Digite el segundo numero, maximo 3"
           id="numero2"
         />
-
-        <div class="button">
-          <button
-            type="button"
-            class="btn btn-success jus"
-            style="
-              margin-left: 25vh;
-              position: relative;
-              top: 20px;
-              margin-bottom: 2%;
-            "
-            onclick="validar()"
-          >
-            Sumar
-          </button>
-          <button
-            type="reset"
-            class="btn btn-danger jus"
-            style="position: relative; top: 20px; margin-bottom: 2%"
-            onclick="eliminar()"
-          >
-            Limpiar
-          </button>
-        </div>
       </form>
+
+      <div class="button">
+        <button
+          type="button"
+          class="btn btn-success center-block"
+          onclick="validar()"
+        >
+          Sumar
+        </button>
+
+        <button type="reset" class="btn btn-danger" onclick="eliminar()">
+          Limpiar
+        </button>
+      </div>
 
       <h2
         class="text-center"
@@ -289,6 +277,8 @@
 
     function eliminar() {
       var elementoFinal = document.getElementById("final");
+      const numero1 = (document.getElementById("numero1").value = "");
+      const numero2 = (document.getElementById("numero2").value = "");
 
       document.getElementById("procedimiento").textContent = " ";
       document.getElementById("paso1").textContent = " ";
