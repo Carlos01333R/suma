@@ -18,15 +18,8 @@
         <input
           class="form-control"
           type="text"
-          placeholder="Digite el primer numero, maximo 3 "
+          placeholder="Digite la suma, maximo 3 numeros "
           id="numero1"
-        />
-
-        <input
-          class="form-control"
-          type="text"
-          placeholder="Digite el segundo numero, maximo 3"
-          id="numero2"
         />
       </form>
 
@@ -38,12 +31,10 @@
         >
           Sumar
         </button>
-
         <button type="reset" class="btn btn-danger" onclick="eliminar()">
           Limpiar
         </button>
       </div>
-
       <h2
         class="text-center"
         id="error"
@@ -51,31 +42,89 @@
       ></h2>
 
       <h2
-        style="font-family: 'Times New Roman', Times, serif; margin-top: 2%"
+        style="
+          font-family: 'Times New Roman', Times, serif;
+          margin-top: 2%;
+          margin-bottom: 20px;
+        "
         class="text-center"
         id="procedimiento"
       ></h2>
+
+      <div>
+        <p id="descripcion"></p>
+        <p
+          id="descripcionnumeros"
+          style="color: red; font-size: 30px"
+          class="text-center"
+        ></p>
+      </div>
+
       <section class="grilla">
         <div class="suma-container">
           <h2 id="paso1" class="text-center"></h2>
+          <div
+            class="numero"
+            id="lleva"
+            style="font-size: 15px; color: red; margin-right: 20px"
+          ></div>
           <div class="numero" id="num1"></div>
           <div class="signo" id="signo1"></div>
           <div class="numero" id="num2"></div>
           <div id="linea1" class="linea"></div>
-          <div class="numero" style="color: red" id="resu1"></div>
+          <div
+            class="numero"
+            style="color: red; margin-left: 13px"
+            id="resu1"
+          ></div>
         </div>
         <br />
+      </section>
+
+      <div>
+        <p id="descripcion1"></p>
+        <p id="asignar" style="color: red"></p>
+        <p
+          id="descripcionnumeros1"
+          style="color: red; font-size: 30px"
+          class="text-center"
+        ></p>
+      </div>
+
+      <section class="grilla">
         <div class="suma-container" id="ocultar">
           <h2 id="paso2" class="text-center"></h2>
+          <div
+            class="numero"
+            id="lleva1"
+            style="font-size: 15px; color: red; margin-right: 20px"
+          ></div>
           <div class="numero" id="nume1"></div>
           <div class="signo" id="signo2"></div>
           <div class="numero" id="nume2"></div>
           <div id="linea2" class="linea"></div>
           <div class="numero" style="color: red" id="resu2"></div>
         </div>
+      </section>
 
+      <div style="margin-top: 10px">
+        <p id="descripcion2"></p>
+        <p id="asignar1" style="color: red"></p>
+        <p
+          id="descripcionnumeros2"
+          style="color: red; font-size: 30px"
+          class="text-center"
+        ></p>
+      </div>
+
+      <section class="grilla">
         <div class="suma-container" id="ocultar2">
           <h2 id="paso3" class="text-center"></h2>
+          <div
+            class="numero"
+            id="lleva11"
+            style="font-size: 15px; color: red; margin-right: 30px"
+          ></div>
           <div class="numero" id="nume3"></div>
           <div class="signo" id="signo3"></div>
           <div class="numero" id="nume4"></div>
@@ -98,43 +147,43 @@
   </body>
   <script>
     function validar() {
-      const numero1 = document.getElementById("numero1").value;
-      const numero2 = document.getElementById("numero2").value;
-      const expresion_regular = /^\d{1,3}$/;
+      const alfabeto = document.getElementById("numero1").value;
+      var expresionRegular = /^[1-9]\d{0,2}\+[1-9]\d{0,2}$/;
 
-      if (expresion_regular.test(numero1) && expresion_regular.test(numero2)) {
-        calcular();
+      if (expresionRegular.test(alfabeto)) {
+        var numeros = alfabeto.split("+");
+        var numero1 = numeros[0];
+        var numero2 = numeros[1];
+
+        calcular(numero1, numero2);
+
         document.getElementById("error").textContent = " ";
       } else {
         let mensaje = "Datos Erroneos";
         document.getElementById("error").textContent = mensaje;
-        eliminar();
+        eliminar(numero1, numero2);
       }
     }
 
-    function calcular() {
-      const numero1 = document.getElementById("numero1").value;
-      const numero2 = document.getElementById("numero2").value;
-
+    function calcular(numero1, numero2) {
       if (numero1.length == 1 && numero2.length == 1) {
-        pasos1();
+        pasos1(numero1, numero2);
       } else if (
         (numero1.length == 1 && numero2.length == 2) ||
         (numero2.length == 1 && numero1.length == 2) ||
         (numero1.length == 2 && numero2.length == 2)
       ) {
-        pasos2();
+        pasos2(numero1, numero2);
       } else {
-        pasos3();
+        pasos3(numero1, numero2);
       }
     }
 
-    function pasos1() {
-      const numero1 = document.getElementById("numero1").value;
-      const numero2 = document.getElementById("numero2").value;
-
+    function pasos1(numero1, numero2) {
       var elementoFinal = document.getElementById("final");
       const operacion = parseInt(numero1) + parseInt(numero2);
+      compilar(operacion);
+
       const operacionStr = operacion.toString();
       const primerNumero = parseInt(operacionStr.charAt(0));
       const ultimoNumero = parseInt(
@@ -149,6 +198,14 @@
       let signo = "+";
       let numeros = numero1 + " + " + numero2 + " =";
       let linea = "--------";
+
+      let numeros_mostrar1 = numero1 + " + " + numero2;
+      let descripcion =
+        "PRIMERO SUMAMOS UNIDAD DEL PRIMERO NUMERO MAS UNIDAD DEL SEGUNDO NUMERO: ";
+
+      document.getElementById("descripcionnumeros").textContent =
+        numeros_mostrar1;
+      document.getElementById("descripcion").textContent = descripcion;
 
       var ocultar = document.getElementById("ocultar");
       var ocultar2 = document.getElementById("ocultar2");
@@ -172,11 +229,10 @@
       elementoFinal.style.height = "40px";
     }
 
-    function pasos2() {
-      const numero1 = document.getElementById("numero1").value;
-      const numero2 = document.getElementById("numero2").value;
+    function pasos2(numero1, numero2) {
       var elementoFinal = document.getElementById("final");
       const operacion = parseInt(numero1) + parseInt(numero2);
+      compilar(operacion);
       const operacionStr = operacion.toString();
       const primerNumero = parseInt(operacionStr.charAt(0));
       const ultimoNumero = parseInt(
@@ -192,8 +248,6 @@
       let numeros = numero1 + " + " + numero2 + " =";
       let linea = "--------";
 
-      var ocultar = document.getElementById("ocultar");
-      var ocultar2 = document.getElementById("ocultar2");
       document.getElementById("procedimiento").textContent = procedimiento;
       document.getElementById("paso1").textContent = paso1;
       document.getElementById("paso2").textContent = paso2;
@@ -210,6 +264,57 @@
       document.getElementById("final").textContent = operacion;
       document.getElementById("linea1").textContent = linea;
       document.getElementById("linea2").textContent = linea;
+      document.getElementById("lleva").textContent = " ";
+      document.getElementById("lleva1").textContent = " ";
+
+      let numero1cadena = numero1.toString();
+      let numero2cadena = numero2.toString();
+      let unidad1 = numero1cadena[1];
+      let unidad2 = numero2cadena[1];
+
+      let numero1Cadena1 = numero1.toString();
+      let numero2Cadena1 = numero2.toString();
+      let decena1 = numero1Cadena1[0];
+      let decena2 = numero2Cadena1[0];
+
+      if (numero1.length == 2 && numero2.length == 2) {
+        dosdigitos(unidad1, unidad2, decena1, decena2);
+      }
+
+      if (
+        numero1.length == 2 &&
+        numero2.length == 2 &&
+        parseInt(unidad1) + parseInt(unidad2) >= 10
+      ) {
+        lleva1(unidad1, unidad2);
+      }
+
+      if (
+        numero1.length == 1 &&
+        numero2.length == 2 &&
+        parseInt(numero1) + parseInt(unidad2) >= 10
+      ) {
+        numero1llevar1(numero1, unidad2, decena2);
+      }
+
+      if (numero1.length == 1 && numero2.length == 2) {
+        numero1normal(numero1, unidad2, decena2);
+      }
+
+      if (
+        numero1.length == 2 &&
+        numero2.length == 1 &&
+        parseInt(unidad1) + parseInt(numero2) >= 10
+      ) {
+        num2llevar1(unidad1, numero2, decena1);
+      }
+
+      if (numero1.length == 2 && numero2.length == 1) {
+        numero2normal(unidad1, numero2, decena1);
+      }
+
+      var ocultar = document.getElementById("ocultar");
+      var ocultar2 = document.getElementById("ocultar2");
 
       ocultar2.style.display = "none";
       ocultar.style.display = "block";
@@ -220,11 +325,141 @@
       elementoFinal.style.height = "40px";
     }
 
-    function pasos3() {
-      const numero1 = document.getElementById("numero1").value;
-      const numero2 = document.getElementById("numero2").value;
+    function dosdigitos(unidad1, unidad2, decena1, decena2) {
+      let numeros_mostrar1 = unidad1 + " + " + unidad2;
+      let descripcion1 =
+        "PRIMERO SUMAMOS UNIDAD DEL PRIMERO NUMERO MAS UNIDAD DEL SEGUNDO NUMERO: ";
+
+      document.getElementById("descripcionnumeros").textContent =
+        numeros_mostrar1;
+      document.getElementById("descripcion").textContent = descripcion1;
+
+      let numeros_mostrar2 = decena1 + " + " + decena2;
+      let descripcion2 =
+        "DESPUES SUMAMOS DECENA DEL PRIMERO NUMERO MAS DECENA DEL SEGUNDO NUMERO: ";
+
+      document.getElementById("descripcionnumeros1").textContent =
+        numeros_mostrar2;
+      document.getElementById("descripcion1").textContent = descripcion2;
+      document.getElementById("asignar").textContent = " ";
+      document.getElementById("asignar1").textContent = " ";
+    }
+
+    function lleva1(unidad1, unidad2) {
+      var llevar = "1";
+      var mensaje = " Recuerda que llevas uno(1)";
+      document.getElementById("lleva").textContent = llevar;
+      document.getElementById("lleva1").textContent = llevar;
+      document.getElementById("asignar").textContent = mensaje;
+      document.getElementById("asignar1").textContent = " ";
+    }
+
+    function numero1llevar1(numero1, unidad2, decena2) {
+      var llevar = "1";
+
+      document.getElementById("lleva").textContent = llevar;
+      document.getElementById("lleva1").textContent = llevar;
+
+      var mensaje = " Recuerda que llevas uno(1)";
+      document.getElementById("asignar").textContent = mensaje;
+
+      let numeros_mostrar1 = numero1 + " + " + unidad2;
+      let descripcion1 =
+        "PRIMERO SUMAMOS UNIDAD DEL PRIMERO NUMERO MAS UNIDAD DEL SEGUNDO NUMERO: ";
+
+      document.getElementById("descripcionnumeros").textContent =
+        numeros_mostrar1;
+      document.getElementById("descripcion").textContent = descripcion1;
+
+      let numeros_mostrar2 = "llevas una(1)" + " + " + decena2;
+      let descripcion2 =
+        "DESPUES SUMAMOS DECENA DEL PRIMERO NUMERO MAS DECENA DEL SEGUNDO NUMERO: ";
+
+      document.getElementById("descripcionnumeros1").textContent =
+        numeros_mostrar2;
+      document.getElementById("descripcion1").textContent = descripcion2;
+      document.getElementById("asignar1").textContent = " ";
+    }
+
+    function num2llevar1(unidad1, numero2, decena1) {
+      var llevar = "1";
+      document.getElementById("lleva").textContent = llevar;
+      document.getElementById("lleva1").textContent = llevar;
+
+      var mensaje = " Recuerda que llevas uno(1)";
+      document.getElementById("asignar").textContent = mensaje;
+
+      let numeros_mostrar1 = unidad1 + " + " + numero2;
+      let descripcion1 =
+        "PRIMERO SUMAMOS UNIDAD DEL PRIMERO NUMERO MAS UNIDAD DEL SEGUNDO NUMERO: ";
+
+      document.getElementById("descripcionnumeros").textContent =
+        numeros_mostrar1;
+      document.getElementById("descripcion").textContent = descripcion1;
+
+      let numeros_mostrar2 = decena1 + " + " + "0";
+      let descripcion2 =
+        "DESPUES SUMAMOS DECENA DEL PRIMERO NUMERO MAS DECENA DEL SEGUNDO NUMERO: ";
+
+      document.getElementById("descripcionnumeros1").textContent =
+        numeros_mostrar2;
+      document.getElementById("descripcion1").textContent = descripcion2;
+      document.getElementById("asignar1").textContent = " ";
+    }
+
+    function numero1normal(numero1, unidad2, decena2) {
+      var mover = document.getElementById("num1");
+      var mover1 = document.getElementById("nume1");
+
+      mover.style.marginLeft = "12px";
+      mover1.style.marginLeft = "12px";
+      let numeros_mostrar1 = numero1 + " + " + unidad2;
+      let descripcion1 =
+        "PRIMERO SUMAMOS UNIDAD DEL PRIMERO NUMERO MAS UNIDAD DEL SEGUNDO NUMERO: ";
+
+      document.getElementById("descripcionnumeros").textContent =
+        numeros_mostrar1;
+      document.getElementById("descripcion").textContent = descripcion1;
+
+      let numeros_mostrar2 = "0" + " + " + decena2;
+      let descripcion2 =
+        "DESPUES SUMAMOS DECENA DEL PRIMERO NUMERO MAS DECENA DEL SEGUNDO NUMERO: ";
+
+      document.getElementById("descripcionnumeros1").textContent =
+        numeros_mostrar2;
+      document.getElementById("descripcion1").textContent = descripcion2;
+      document.getElementById("asignar").textContent = " ";
+      document.getElementById("asignar1").textContent = " ";
+    }
+
+    function numero2normal(unidad1, numero2, decena1) {
+      var mover = document.getElementById("num2");
+      var mover1 = document.getElementById("nume2");
+
+      mover.style.marginLeft = "15px";
+      mover1.style.marginLeft = "15px";
+      let numeros_mostrar1 = unidad1 + " + " + numero2;
+      let descripcion1 =
+        "PRIMERO SUMAMOS UNIDAD DEL PRIMERO NUMERO MAS UNIDAD DEL SEGUNDO NUMERO: ";
+
+      document.getElementById("descripcionnumeros").textContent =
+        numeros_mostrar1;
+      document.getElementById("descripcion").textContent = descripcion1;
+
+      let numeros_mostrar2 = decena1 + " + " + "0";
+      let descripcion2 =
+        "DESPUES SUMAMOS DECENA DEL PRIMERO NUMERO MAS DECENA DEL SEGUNDO NUMERO: ";
+
+      document.getElementById("descripcionnumeros1").textContent =
+        numeros_mostrar2;
+      document.getElementById("descripcion1").textContent = descripcion2;
+      document.getElementById("asignar1").textContent = " ";
+    }
+
+    function pasos3(numero1, numero2) {
       var elementoFinal = document.getElementById("final");
       const operacion = parseInt(numero1) + parseInt(numero2);
+      compilar(operacion);
       const operacionStr = operacion.toString();
 
       let ultimosDosDigitos = operacionStr.slice(-2);
@@ -273,13 +508,459 @@
       elementoFinal.style.borderRadius = "25px";
       elementoFinal.style.width = "auto";
       elementoFinal.style.height = "40px";
+
+      let numero1cadena = numero1.toString();
+      let numero2cadena = numero2.toString();
+
+      let unidad1 = numero1cadena[2];
+      let decena1 = numero1cadena[1];
+      let centena1 = numero1cadena[0];
+
+      let unidad2 = numero2cadena[2];
+      let decena2 = numero2cadena[1];
+      let centena2 = numero2cadena[0];
+
+      if (numero1.length == 1 && numero2.length == 3) {
+        unotres(numero1, unidad2, decena2, centena2);
+      }
+      if (
+        numero1.length == 1 &&
+        numero2.length == 3 &&
+        parseInt(numero1) + parseInt(unidad2) >= 10
+      ) {
+        unotreslleva1(numero1, unidad2, decena2, centena2);
+      }
+      if (numero1.length == 3 && numero2.length == 1) {
+        tresuno(numero2, unidad1, decena1, centena1);
+      }
+      if (
+        numero1.length == 3 &&
+        numero2.length == 1 &&
+        parseInt(numero2) + parseInt(unidad1) >= 10
+      ) {
+        tresunolleva1(numero2, unidad1, decena1, centena1);
+      }
+      if (numero1.length == 2 && numero2.length == 3) {
+        let unidad1 = numero1cadena[1];
+        let decena1 = numero1cadena[0];
+
+        let unidad2 = numero2cadena[2];
+        let decena2 = numero2cadena[1];
+        let centena2 = numero2cadena[0];
+
+        dostres(unidad1, decena1, unidad2, decena2, centena2);
+      }
+      if (
+        numero1.length == 2 &&
+        numero2.length == 3 &&
+        parseInt(numero1cadena[1]) + parseInt(unidad2) >= 10
+      ) {
+        dostreslleva1();
+      }
+      if (
+        numero1.length == 2 &&
+        numero2.length == 3 &&
+        parseInt(numero1cadena[1]) + parseInt(unidad2) >= 10 &&
+        parseInt(numero1cadena[0]) + parseInt(decena2) >= 10
+      ) {
+        dostresllevados();
+      }
+      if (numero1.length == 3 && numero2.length == 2) {
+        let unidad2 = numero2cadena[1];
+        let decena2 = numero2cadena[0];
+        tresdos(unidad1, decena1, centena1, unidad2, decena2);
+      }
+      if (
+        numero1.length == 3 &&
+        numero2.length == 2 &&
+        parseInt(unidad1) + parseInt(numero2cadena[1]) >= 10
+      ) {
+        tresdoslleva1();
+      }
+
+      if (
+        numero1.length == 3 &&
+        numero2.length == 2 &&
+        parseInt(decena1) + parseInt(numero2cadena[0]) >= 10
+      ) {
+        tresdoslleva1decena();
+      }
+
+      if (
+        numero1.length == 3 &&
+        numero2.length == 2 &&
+        parseInt(unidad1) + parseInt(numero2cadena[1]) >= 10 &&
+        parseInt(decena1) + parseInt(numero2cadena[0]) >= 10
+      ) {
+        tresdosllevardos();
+      }
+      if (numero1.length == 3 && numero2.length == 3) {
+        trestres(unidad1, decena1, centena1, unidad2, decena2, centena2);
+      }
+      if (
+        numero1.length == 3 &&
+        numero2.length == 3 &&
+        parseInt(unidad1) + parseInt(unidad2) >= 10
+      ) {
+        trestreslleva1();
+      }
+      if (
+        numero1.length == 3 &&
+        numero2.length == 3 &&
+        parseInt(unidad1) + parseInt(unidad2) >= 10 &&
+        parseInt(decena1) + parseInt(decena2) >= 10
+      ) {
+        trestresllevados();
+      }
     }
 
-    function eliminar() {
-      var elementoFinal = document.getElementById("final");
-      const numero1 = (document.getElementById("numero1").value = "");
-      const numero2 = (document.getElementById("numero2").value = "");
+    function trestresllevados() {
+      var llevar = "1";
+      var mensaje = " Recuerda que llevas uno(1)";
 
+      document.getElementById("asignar1").textContent = mensaje;
+      document.getElementById("lleva11").textContent = llevar;
+      var resul2 = document.getElementById("resu2");
+      resul2.style.marginLeft = "13px";
+    }
+
+    function trestreslleva1() {
+      var llevar = "1";
+      var mensaje = " Recuerda que llevas uno(1)";
+      document.getElementById("asignar").textContent = mensaje;
+      document.getElementById("lleva").textContent = llevar;
+      document.getElementById("lleva1").textContent = llevar;
+
+      var mover = document.getElementById("lleva");
+      var mover1 = document.getElementById("lleva1");
+
+      mover.style.marginLeft = "14px";
+      mover1.style.marginLeft = "14px";
+
+      var resul2 = document.getElementById("resu2");
+      resul2.style.marginLeft = "13px";
+    }
+
+    function trestres(unidad1, decena1, centena1, unidad2, decena2, centena2) {
+      var mover = document.getElementById("resu1");
+      var mover1 = document.getElementById("resu2");
+      mover.style.marginLeft = "20px";
+      mover1.style.marginLeft = "20px";
+
+      let numeros_mostrar1 = unidad1 + " + " + unidad2;
+      let descripcion1 =
+        "PRIMERO SUMAMOS UNIDAD DEL PRIMERO NUMERO MAS UNIDAD DEL SEGUNDO NUMERO: ";
+
+      document.getElementById("descripcionnumeros").textContent =
+        numeros_mostrar1;
+      document.getElementById("descripcion").textContent = descripcion1;
+
+      let numeros_mostrar2 = decena1 + " + " + decena2;
+      let descripcion2 =
+        "DESPUES SUMAMOS DECENA DEL PRIMERO NUMERO MAS DECENA DEL SEGUNDO NUMERO: ";
+
+      document.getElementById("descripcionnumeros1").textContent =
+        numeros_mostrar2;
+      document.getElementById("descripcion1").textContent = descripcion2;
+
+      let numeros_mostrar3 = centena1 + " + " + centena2;
+      let descripcion3 =
+        "POR ULTIMO SUMAMOS CENTENA DEL PRIMERO NUMERO MAS CENTENAS DEL SEGUNDO NUMERO: ";
+
+      document.getElementById("descripcionnumeros2").textContent =
+        numeros_mostrar3;
+      document.getElementById("descripcion2").textContent = descripcion3;
+
+      document.getElementById("asignar").textContent = " ";
+      document.getElementById("asignar1").textContent = " ";
+    }
+
+    function unotres(numero1, unidad2, decena2, centena2) {
+      var mover = document.getElementById("num1");
+      var mover1 = document.getElementById("nume1");
+      var mover2 = document.getElementById("nume3");
+      mover.style.marginLeft = "20px";
+      mover1.style.marginLeft = "20px";
+      mover2.style.marginLeft = "20px";
+
+      let numeros_mostrar1 = numero1 + " + " + unidad2;
+      let descripcion1 =
+        "PRIMERO SUMAMOS UNIDAD DEL PRIMERO NUMERO MAS UNIDAD DEL SEGUNDO NUMERO: ";
+
+      document.getElementById("descripcionnumeros").textContent =
+        numeros_mostrar1;
+      document.getElementById("descripcion").textContent = descripcion1;
+
+      let numeros_mostrar2 = "0" + " + " + decena2;
+      let descripcion2 =
+        "DESPUES SUMAMOS DECENA DEL PRIMERO NUMERO MAS DECENA DEL SEGUNDO NUMERO: ";
+
+      document.getElementById("descripcionnumeros1").textContent =
+        numeros_mostrar2;
+      document.getElementById("descripcion1").textContent = descripcion2;
+
+      let numeros_mostrar3 = "0" + " + " + centena2;
+      let descripcion3 =
+        "POR ULTIMO SUMAMOS CENTENA DEL PRIMERO NUMERO MAS CENTENAS DEL SEGUNDO NUMERO: ";
+
+      document.getElementById("descripcionnumeros2").textContent =
+        numeros_mostrar3;
+      document.getElementById("descripcion2").textContent = descripcion3;
+
+      document.getElementById("asignar").textContent = " ";
+    }
+
+    function unotreslleva1(numero1, unidad2, decena2, centena2) {
+      var llevar = "1";
+      var mensaje = " Recuerda que llevas uno(1)";
+      document.getElementById("asignar").textContent = mensaje;
+      document.getElementById("lleva").textContent = llevar;
+      document.getElementById("lleva1").textContent = llevar;
+
+      var mover = document.getElementById("lleva");
+      var mover1 = document.getElementById("lleva1");
+
+      mover.style.marginLeft = "15px";
+      mover1.style.marginLeft = "15px";
+
+      let numeros_mostrar1 = numero1 + " + " + unidad2;
+      let descripcion1 =
+        "PRIMERO SUMAMOS UNIDAD DEL PRIMERO NUMERO MAS UNIDAD DEL SEGUNDO NUMERO: ";
+
+      document.getElementById("descripcionnumeros").textContent =
+        numeros_mostrar1;
+      document.getElementById("descripcion").textContent = descripcion1;
+
+      let numeros_mostrar2 = "0" + " + " + decena2;
+      let descripcion2 =
+        "DESPUES SUMAMOS DECENA DEL PRIMERO NUMERO MAS DECENA DEL SEGUNDO NUMERO: ";
+
+      document.getElementById("descripcionnumeros1").textContent =
+        numeros_mostrar2;
+      document.getElementById("descripcion1").textContent = descripcion2;
+
+      let numeros_mostrar3 = "0" + " + " + centena2;
+      let descripcion3 =
+        "POR ULTIMO SUMAMOS CENTENA DEL PRIMERO NUMERO MAS CENTENAS DEL SEGUNDO NUMERO:  ";
+
+      document.getElementById("descripcionnumeros2").textContent =
+        numeros_mostrar3;
+      document.getElementById("descripcion2").textContent = descripcion3;
+    }
+
+    function tresuno(numero2, unidad1, decena1, centena1) {
+      var mover = document.getElementById("num2");
+      var mover1 = document.getElementById("nume2");
+      var mover2 = document.getElementById("nume4");
+      mover.style.marginLeft = "20px";
+      mover1.style.marginLeft = "20px";
+      mover2.style.marginLeft = "20px";
+
+      let numeros_mostrar1 = unidad1 + " + " + numero2;
+      let descripcion1 =
+        "PRIMERO SUMAMOS UNIDAD DEL PRIMERO NUMERO MAS UNIDAD DEL SEGUNDO NUMERO: ";
+
+      document.getElementById("descripcionnumeros").textContent =
+        numeros_mostrar1;
+      document.getElementById("descripcion").textContent = descripcion1;
+
+      let numeros_mostrar2 = decena1 + " + " + "0";
+      let descripcion2 =
+        "DESPUES SUMAMOS DECENA DEL PRIMERO NUMERO MAS DECENA DEL SEGUNDO NUMERO: ";
+
+      document.getElementById("descripcionnumeros1").textContent =
+        numeros_mostrar2;
+      document.getElementById("descripcion1").textContent = descripcion2;
+
+      let numeros_mostrar3 = centena1 + " + " + "0";
+      let descripcion3 =
+        "POR ULTIMO SUMAMOS CENTENA DEL PRIMERO NUMERO MAS CENTENAS DEL SEGUNDO NUMERO: ";
+
+      document.getElementById("descripcionnumeros2").textContent =
+        numeros_mostrar3;
+      document.getElementById("descripcion2").textContent = descripcion3;
+
+      document.getElementById("asignar").textContent = " ";
+    }
+
+    function tresunolleva1(numero2, unidad1, decena1, centena1) {
+      var llevar = "1";
+      var mensaje = " Recuerda que llevas uno(1)";
+      document.getElementById("asignar").textContent = mensaje;
+      document.getElementById("lleva").textContent = llevar;
+      document.getElementById("lleva1").textContent = llevar;
+
+      var moverllevar = document.getElementById("lleva");
+      var moverllevar1 = document.getElementById("lleva1");
+
+      moverllevar.style.marginLeft = "10px";
+      moverllevar1.style.marginLeft = "10px";
+
+      let numeros_mostrar1 = unidad1 + " + " + numero2;
+      let descripcion1 =
+        "PRIMERO SUMAMOS UNIDAD DEL PRIMERO NUMERO MAS UNIDAD DEL SEGUNDO NUMERO: ";
+
+      document.getElementById("descripcionnumeros").textContent =
+        numeros_mostrar1;
+      document.getElementById("descripcion").textContent = descripcion1;
+
+      let numeros_mostrar2 = decena1 + " + " + "0";
+      let descripcion2 =
+        "DESPUES SUMAMOS DECENA DEL PRIMERO NUMERO MAS DECENA DEL SEGUNDO NUMERO: ";
+
+      document.getElementById("descripcionnumeros1").textContent =
+        numeros_mostrar2;
+      document.getElementById("descripcion1").textContent = descripcion2;
+
+      let numeros_mostrar3 = centena1 + " + " + "0";
+      let descripcion3 =
+        "POR ULTIMO SUMAMOS CENTENA DEL PRIMERO NUMERO MAS CENTENAS DEL SEGUNDO NUMERO: ";
+
+      document.getElementById("descripcionnumeros2").textContent =
+        numeros_mostrar3;
+      document.getElementById("descripcion2").textContent = descripcion3;
+    }
+
+    function dostres(unidad1, decena1, unidad2, decena2, centena2) {
+      var mover = document.getElementById("num1");
+      var mover3 = document.getElementById("lleva");
+      var mover4 = document.getElementById("lleva1");
+      var mover1 = document.getElementById("nume1");
+      var mover2 = document.getElementById("nume3");
+      mover.style.marginLeft = "14px";
+      mover1.style.marginLeft = "14px";
+      mover2.style.marginLeft = "14px";
+      mover3.style.marginLeft = "20px";
+      mover4.style.marginLeft = "20px";
+
+      let numeros_mostrar1 = unidad1 + " + " + unidad2;
+      let descripcion1 =
+        "PRIMERO SUMAMOS UNIDAD DEL PRIMERO NUMERO MAS UNIDAD DEL SEGUNDO NUMERO: ";
+
+      document.getElementById("descripcionnumeros").textContent =
+        numeros_mostrar1;
+      document.getElementById("descripcion").textContent = descripcion1;
+
+      let numeros_mostrar2 = decena1 + " + " + decena2;
+      let descripcion2 =
+        "DESPUES SUMAMOS DECENA DEL PRIMERO NUMERO MAS DECENA DEL SEGUNDO NUMERO: ";
+
+      document.getElementById("descripcionnumeros1").textContent =
+        numeros_mostrar2;
+      document.getElementById("descripcion1").textContent = descripcion2;
+
+      let numeros_mostrar3 = "0" + " + " + centena2;
+      let descripcion3 =
+        "POR ULTIMO SUMAMOS CENTENA DEL PRIMERO NUMERO MAS CENTENAS DEL SEGUNDO NUMERO: ";
+
+      document.getElementById("descripcionnumeros2").textContent =
+        numeros_mostrar3;
+      document.getElementById("descripcion2").textContent = descripcion3;
+
+      document.getElementById("asignar").textContent = " ";
+    }
+
+    function dostresllevados() {
+      var llevar = "1";
+      var mensaje = " Recuerda que llevas uno(1)";
+      document.getElementById("asignar").textContent = mensaje;
+      document.getElementById("asignar1").textContent = mensaje;
+      document.getElementById("lleva").textContent = llevar;
+      document.getElementById("lleva1").textContent = llevar;
+      document.getElementById("lleva11").textContent = llevar;
+      var resul2 = document.getElementById("resu2");
+      resul2.style.marginLeft = "13px";
+      alert("entro");
+    }
+
+    function dostreslleva1() {
+      var llevar = "1";
+      var mensaje = " Recuerda que llevas uno(1)";
+      document.getElementById("asignar").textContent = mensaje;
+      document.getElementById("lleva").textContent = llevar;
+      document.getElementById("lleva1").textContent = llevar;
+      var resul2 = document.getElementById("resu2");
+      resul2.style.marginLeft = "13px";
+    }
+
+    function tresdos(unidad1, decena1, centena1, unidad2, decena2) {
+      var mover = document.getElementById("num2");
+      var mover1 = document.getElementById("nume2");
+      var mover2 = document.getElementById("nume4");
+      var mover3 = document.getElementById("resu2");
+      var mover4 = document.getElementById("resu1");
+      mover.style.marginLeft = "15px";
+      mover1.style.marginLeft = "15px";
+      mover2.style.marginLeft = "15px";
+      mover3.style.marginLeft = "15px";
+      mover4.style.marginLeft = "23px";
+
+      let numeros_mostrar1 = unidad1 + " + " + unidad2;
+      let descripcion1 =
+        "PRIMERO SUMAMOS UNIDAD DEL PRIMERO NUMERO MAS UNIDAD DEL SEGUNDO NUMERO: ";
+
+      document.getElementById("descripcionnumeros").textContent =
+        numeros_mostrar1;
+      document.getElementById("descripcion").textContent = descripcion1;
+
+      let numeros_mostrar2 = decena1 + " + " + decena2;
+      let descripcion2 =
+        "DESPUES SUMAMOS DECENA DEL PRIMERO NUMERO MAS DECENA DEL SEGUNDO NUMERO: ";
+
+      document.getElementById("descripcionnumeros1").textContent =
+        numeros_mostrar2;
+      document.getElementById("descripcion1").textContent = descripcion2;
+
+      let numeros_mostrar3 = centena1 + " + " + "0";
+      let descripcion3 =
+        "POR ULTIMO SUMAMOS CENTENA DEL PRIMERO NUMERO MAS CENTENAS DEL SEGUNDO NUMERO: ";
+
+      document.getElementById("descripcionnumeros2").textContent =
+        numeros_mostrar3;
+      document.getElementById("descripcion2").textContent = descripcion3;
+
+      document.getElementById("asignar").textContent = " ";
+    }
+
+    function tresdosllevardos() {
+      var llevar = "1";
+      var mensaje = " Recuerda que llevas uno(1)";
+      document.getElementById("asignar").textContent = mensaje;
+      document.getElementById("asignar1").textContent = mensaje;
+      document.getElementById("lleva").textContent = llevar;
+      document.getElementById("lleva1").textContent = llevar;
+      document.getElementById("lleva11").textContent = llevar;
+      var resul2 = document.getElementById("resu2");
+      resul2.style.marginLeft = "13px";
+    }
+
+    function tresdoslleva1() {
+      var llevar = "1";
+      var mensaje = " Recuerda que llevas uno(1)";
+      document.getElementById("asignar").textContent = mensaje;
+      document.getElementById("lleva").textContent = llevar;
+      document.getElementById("lleva1").textContent = llevar;
+
+      var mover = document.getElementById("lleva");
+      var mover1 = document.getElementById("lleva1");
+      mover.style.marginLeft = "15px";
+      mover1.style.marginLeft = "15px";
+
+      var resul2 = document.getElementById("resu2");
+      resul2.style.marginLeft = "13px";
+    }
+
+    function tresdoslleva1decena() {
+      var llevar = "1";
+      var mensaje = " Recuerda que llevas uno(1)";
+      document.getElementById("lleva1").textContent = llevar;
+      document.getElementById("asignar1").textContent = mensaje;
+    }
+
+    function eliminar(numero1, numero2) {
+      var elementoFinal = document.getElementById("final");
+      document.getElementById("asignar1").textContent = " ";
+      document.getElementById("lleva11").textContent = " ";
       document.getElementById("procedimiento").textContent = " ";
       document.getElementById("paso1").textContent = " ";
       document.getElementById("paso2").textContent = " ";
@@ -302,8 +983,35 @@
       document.getElementById("linea1").textContent = " ";
       document.getElementById("linea2").textContent = " ";
       document.getElementById("linea3").textContent = " ";
+      document.getElementById("descripcion").textContent = " ";
 
+      document.getElementById("descripcionnumeros1").textContent = " ";
+      document.getElementById("descripcion1").textContent = " ";
+      document.getElementById("descripcionnumeros").textContent = " ";
+      document.getElementById("lleva").textContent = " ";
+      document.getElementById("lleva1").textContent = " ";
+      document.getElementById("asignar").textContent = " ";
+      document.getElementById("descripcionnumeros2").textContent = " ";
+      document.getElementById("descripcion2").textContent = " ";
       elementoFinal.style.border = "none";
+    }
+
+    function compilar(operacion) {
+      // Obtener el texto de la entrada
+      var mensaje = "El resultado de su suma es: " + operacion;
+      // Verificar si el navegador admite la API de Web Speech
+      if ("speechSynthesis" in window) {
+        // Crear un nuevo objeto de síntesis de voz
+        const synthesis = window.speechSynthesis;
+
+        // Crear un objeto de discurso
+        const utterance = new SpeechSynthesisUtterance(mensaje);
+
+        // Hablar el texto
+        synthesis.speak(utterance);
+      } else {
+        alert("Tu navegador no admite la síntesis de voz.");
+      }
     }
   </script>
 </html>
